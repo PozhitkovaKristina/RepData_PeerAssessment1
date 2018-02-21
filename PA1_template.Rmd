@@ -19,8 +19,8 @@ select<-dplyr::select
 
 
 
-```{r setup, include=FALSE}
-knitr::opts_chunk$set(echo = TRUE,cache = TRUE)
+```{r global_options, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE,cache = TRUE,  fig.path='figure/')
 ```
 
 ## Loading and preprocessing the data
