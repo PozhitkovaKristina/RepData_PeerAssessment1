@@ -1,12 +1,13 @@
 ---
 title: "Course Project 1"
 author: "Pozhitkova"
-date: '20 February 2018 Рі '
+date: '20 February 2018 '
 output:
-  html_document: default
-  pdf_document: default
+  html_document:
+  keep_md: true
 ---
 
+---
 
 ### Reproducible Research Course Project 1
 
@@ -16,8 +17,10 @@ pacman::p_load(readr, haven, ggplot2)
 select<-dplyr::select
 ```
 
+
+
 ```{r setup, include=FALSE}
-knitr::opts_chunk$set(echo = TRUE)
+knitr::opts_chunk$set(echo = TRUE,cache = TRUE)
 ```
 
 ## Loading and preprocessing the data
@@ -129,3 +132,6 @@ df_imp_type<-df_imp%>% mutate(type = weekdays(as.POSIXlt(date)))  %>%
 ```{r plotcompare}
 ggplot(data=df_imp_type, aes(x=interval, y=mean_steps_interval)) + geom_line() +facet_grid(type ~ .)
 ```
+
+
+
