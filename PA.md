@@ -1,0 +1,131 @@
+---
+title: "Course Project 1"
+author: "Pozhitkova"
+date: '20 February 2018 Р С– '
+output:
+  html_document: default
+  pdf_document: default
+---
+
+
+### Reproducible Research Course Project 1
+
+```{r, results = "asis"}
+pacman::p_load(plyr, dplyr, tidyr)
+pacman::p_load(readr, haven, ggplot2)
+select<-dplyr::select
+```
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## Loading and preprocessing the data
+
+Load the data
+
+```{r load}
+setwd("C:/!KRISTINA/!COURSERA/R_Reproducible Research/Course Project 1")
+if(!file.exists('activity.csv')){
+    unzip('activity.zip')
+}
+df <- read.csv('activity.csv')
+```
+
+## What is mean total number of steps taken per day?
+
+1. Calculate the total number of steps taken per day
+
+```{r totalstep}
+steps_day <- df %>% group_by(date) %>% 
+        summarise(total_steps_by_day=sum(steps, na.rm=TRUE))
+```
+
+2. Make a histogram of the total number of steps taken each day
+
+```{r hist}
+ggplot(steps_day,  aes(total_steps_by_day)) + geom_histogram() + xlab("total number of steps taken per day")
+```
+
+3. Calculate and report the mean and median of the total number of steps taken per day
+```{r mean}
+mean_steps <- round(mean(steps_day$total_steps_by_day),1)
+median_steps <- median(steps_day$total_steps_by_day)
+```
+
+The mean = `r mean_steps` and median = `r median_steps` of the total number of steps taken per day.
+
+
+## What is the average daily activity pattern?
+
+1. Time series plot  of the 5-minute interval  and the average number of steps taken, averaged across all days 
+
+```{r stepsinterval}
+steps_interval <- df %>% group_by(interval) %>% 
+        summarise(mean_steps_interval=mean(steps, na.rm=TRUE)) 
+
+```
+
+```{r plotmean}
+ggplot(data=steps_interval, aes(x=interval, y=mean_steps_interval)) + geom_line()
+```
+
+2. Which 5-minute interval, on average across all the days in the dataset, contains the maximum number of steps?
+
+```{r whichmax}
+interval_max_steps<-(steps_interval%>%arrange(desc(mean_steps_interval)))$interval[1] 
+```
+
+The maximum number of steps in  interval = `r interval_max_steps` 
+
+## Imputing missing values
+
+1. Calculate and report the total number of missing values in the dataset 
+
+```{r countNA}
+countNA<-dim(df%>%filter(is.na(steps)))[1]
+```
+
+The total number of missing values in the dataset `r countNA`.
+
+3. Create a new dataset that is equal to the original dataset but with the missing data filled in.
+
+```{r imputation}
+df_imp <- df%>% group_by(interval) %>% 
+        mutate_at(vars(steps) , funs(ifelse(is.na(.),mean(.,na.rm=TRUE), .)))
+```
+
+
+4. Make a histogram of the total number of steps taken each day and Calculate and report the mean and median total number of steps taken per day.
+
+```{r totelstepsimp}
+steps_day_imp <- df_imp %>% group_by(date) %>% 
+        summarise(total_steps_by_day=sum(steps, na.rm=TRUE))
+
+ggplot(steps_day_imp,  aes(total_steps_by_day)) +   geom_histogram()
+```
+
+
+```{r meanimp}
+mean_steps_imp <- round(mean(steps_day_imp$total_steps_by_day),1)
+median_steps_imp <- median(steps_day_imp$total_steps_by_day)
+```
+
+After missing imputation (NA=mean by date)  values are higher the mean = `r mean_steps_imp` and median = `r median_steps_imp` of the total number of steps taken per day. for some days there were no values of the variable steps. Based on the missing values, the estimates were displaced
+
+
+## Are there differences in activity patterns between weekdays and weekends?
+
+1. Create a new factor variable in the dataset with two levels – “weekday” and “weekend” indicating whether a given date is a weekday or weekend day.
+
+```{r computetype}
+df_imp_type<-df_imp%>% mutate(type = weekdays(as.POSIXlt(date)))  %>% 
+        mutate(type=ifelse(type=="суббота"|type=="воскресенье",'weekend', 'weekday'))%>%
+        group_by(type, interval)%>%summarise(mean_steps_interval=mean(steps, na.rm=TRUE)) 
+```
+
+2. Make a panel plot containing a time series plot 
+
+```{r plotcompare}
+ggplot(data=df_imp_type, aes(x=interval, y=mean_steps_interval)) + geom_line() +facet_grid(type ~ .)
+```
