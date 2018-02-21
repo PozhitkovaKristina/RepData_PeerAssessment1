@@ -140,12 +140,12 @@ After missing imputation (NA=mean by date)  values are higher the mean = 1.07662
 
 ## Are there differences in activity patterns between weekdays and weekends?
 
-1. Create a new factor variable in the dataset with two levels â€“ â€œweekdayâ€ and â€œweekendâ€ indicating whether a given date is a weekday or weekend day.
+1. Create a new factor variable in the dataset with two levels – “weekday” and “weekend” indicating whether a given date is a weekday or weekend day.
 
 
 ```r
 df_imp_type<-df_imp%>% mutate(type = weekdays(as.POSIXlt(date)))  %>% 
-        mutate(type=ifelse(type=="ÑÑƒĞ±Ğ±Ğ¾Ñ‚Ğ°"|type=="Ğ²Ğ¾ÑĞºÑ€ĞµÑĞµĞ½ÑŒĞµ",'weekend', 'weekday'))%>%
+        mutate(type=ifelse(type=="ñóááîòà"|type=="âîñêğåñåíüå",'weekend', 'weekday'))%>%
         group_by(type, interval)%>%summarise(mean_steps_interval=mean(steps, na.rm=TRUE)) 
 ```
 
