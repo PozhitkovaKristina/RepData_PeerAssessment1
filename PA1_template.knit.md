@@ -56,7 +56,7 @@ ggplot(steps_day,  aes(total_steps_by_day)) + geom_histogram() + xlab("total num
 ## `stat_bin()` using `bins = 30`. Pick better value with `binwidth`.
 ```
 
-![](PA1_template_files/figure-markdown_strict/hist-1.png)
+![](Figs/hist-1.png)
 
 3. Calculate and report the mean and median of the total number of steps taken per day
 
@@ -83,7 +83,7 @@ steps_interval <- df %>% group_by(interval) %>%
 ggplot(data=steps_interval, aes(x=interval, y=mean_steps_interval)) + geom_line()
 ```
 
-![](PA1_template_files/figure-markdown_strict/plotmean-1.png)
+![](Figs/plotmean-1.png)
 
 2. Which 5-minute interval, on average across all the days in the dataset, contains the maximum number of steps?
 
@@ -128,7 +128,7 @@ ggplot(steps_day_imp,  aes(total_steps_by_day)) +   geom_histogram()
 ## `stat_bin()` using `bins = 30`. Pick better value with `binwidth`.
 ```
 
-![](PA1_template_files/figure-markdown_strict/totelstepsimp-1.png)
+![](Figs/totelstepsimp-1.png)
 
 
 
@@ -158,7 +158,7 @@ df_imp_type<-df_imp%>% mutate(type = weekdays(as.POSIXlt(date)))  %>%
 ggplot(data=df_imp_type, aes(x=interval, y=mean_steps_interval)) + geom_line() +facet_grid(type ~ .)
 ```
 
-![](PA1_template_files/figure-markdown_strict/plotcompare-1.png)
+![](Figs/plotcompare-1.png)
 
 
 

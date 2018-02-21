@@ -35,7 +35,7 @@ What is mean total number of steps taken per day?
 
     ## `stat_bin()` using `bins = 30`. Pick better value with `binwidth`.
 
-![](PA1_template_files/figure-markdown_strict/hist-1.png)
+![](Figs/hist-1.png)
 
 1.  Calculate and report the mean and median of the total number of
     steps taken per day
@@ -61,7 +61,7 @@ What is the average daily activity pattern?
 
     ggplot(data=steps_interval, aes(x=interval, y=mean_steps_interval)) + geom_line()
 
-![](PA1_template_files/figure-markdown_strict/plotmean-1.png)
+![](Figs/plotmean-1.png)
 
 1.  Which 5-minute interval, on average across all the days in the
     dataset, contains the maximum number of steps?
@@ -105,7 +105,7 @@ The total number of missing values in the dataset 2304.
 
     ## `stat_bin()` using `bins = 30`. Pick better value with `binwidth`.
 
-![](PA1_template_files/figure-markdown_strict/totelstepsimp-1.png)
+![](Figs/totelstepsimp-1.png)
 
     mean_steps_imp <- round(mean(steps_day_imp$total_steps_by_day),1)
     median_steps_imp <- median(steps_day_imp$total_steps_by_day)
@@ -134,4 +134,4 @@ Are there differences in activity patterns between weekdays and weekends?
 
     ggplot(data=df_imp_type, aes(x=interval, y=mean_steps_interval)) + geom_line() +facet_grid(type ~ .)
 
-![](PA1_template_files/figure-markdown_strict/plotcompare-1.png)
+![](Figs/plotcompare-1.png)
